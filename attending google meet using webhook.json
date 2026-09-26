@@ -1,0 +1,195 @@
+{
+  "name": "attending google meet using webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d8c27b64-c2a5-4172-b1eb-2fddd4399774",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2ad71431-4773-49a8-ac67-632baa1a3b0d",
+      "name": "Webhook",
+      "webhookId": "d8c27b64-c2a5-4172-b1eb-2fddd4399774"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87b40fb4-a1d3-4a60-ac4e-1b0644cd70de",
+              "name": "title",
+              "value": "={{ $json.body.title }}",
+              "type": "string"
+            },
+            {
+              "id": "86d19ff5-a225-4996-9dd3-97b253e48645",
+              "name": "Email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "078ac15b-77b6-4977-b827-a74e29bd118e",
+              "name": "start",
+              "value": "={{ $json.body.start || $now}}",
+              "type": "string"
+            },
+            {
+              "id": "54f8cd78-d5a4-4235-8a1c-dcf4b07305c2",
+              "name": "end",
+              "value": "={{ $json.body?.end || $now.plus ({hour: 1}) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d05a089f-8540-4e52-98ea-2f81bd8e1824",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "mostafa100pwg@gmail.com",
+        "subject": "Meeting attended",
+        "message": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">   <title>Notification</title> </head> <body style=\"margin: 0; padding: 0; background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;\">    <!-- Main Container Table -->   <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f4f6f9; padding: 40px 10px;\">     <tr>       <td align=\"center\">                  <!-- Card Container -->         <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;\">                      <!-- Header Banner -->           <tr>             <td style=\"background-color: #4f46e5; padding: 32px 40px; text-align: left;\">               <h1 style=\"color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;\">                 Meeting Scheduled               </h1>             </td>           </tr>            <!-- Body Content -->           <tr>             <td style=\"padding: 40px; text-align: left;\">               <p style=\"color: #374151; font-size: 16px; line-height: 1.6; margin-top: 0;\">                 Hello <strong>{{ $json.body?.name || 'There' }}</strong>,               </p>                              <p style=\"color: #4b5563; font-size: 15px; line-height: 1.6;\">                 Your request has been processed successfully. Below are the details for your upcoming session:               </p>                <!-- Details Box -->               <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6; margin: 24px 0;\">                 <tr>                   <td style=\"padding: 20px;\">                     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px; width: 100px;\"><strong>Topic:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.title || 'General Meeting' }}</td>                       </tr>                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px;\"><strong>Start Time:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.start || $now.toFormat('ff') }}</td>                       </tr>                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px;\"><strong>End Time:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.end || $now.plus({ hours: 1 }).toFormat('ff') }}</td>                       </tr>                     </table>                   </td>                 </tr>               </table>                <!-- Call to Action Button -->               <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-top: 32px;\">                 <tr>                   <td align=\"center\">                     <a href=\"https://calendar.google.com\" target=\"_blank\" style=\"background-color: #4f46e5; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 600; font-size: 15px; display: inline-block;\">                       View Calendar                     </a>                   </td>                 </tr>               </table>              </td>           </tr>            <!-- Footer -->           <tr>             <td style=\"background-color: #f9fafb; padding: 24px 40px; text-align: center; border-top: 1px solid #f3f4f6;\">               <p style=\"color: #9ca3af; font-size: 13px; margin: 0; line-height: 1.5;\">                 This is an automated notification. If you have questions, reply to this email directly.               </p>             </td>           </tr>          </table>        </td>     </tr>   </table>  </body> </html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        0
+      ],
+      "id": "e1196ff1-ac2e-414a-a9d5-87d2613bdd90",
+      "name": "Send a message",
+      "webhookId": "1ca237cb-0f17-4ecc-9166-aff9939804ba",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8U6vcJdKIcCaAZOc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseKey": "SUccess"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        912,
+        0
+      ],
+      "id": "b1c4374b-585f-4854-8d2e-63b318b7131c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "mostafa100pwg@gmail.com",
+          "mode": "list",
+          "cachedResultName": "mostafa100pwg@gmail.com"
+        },
+        "additionalFields": {
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">   <title>Notification</title> </head> <body style=\"margin: 0; padding: 0; background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;\">    <!-- Main Container Table -->   <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f4f6f9; padding: 40px 10px;\">     <tr>       <td align=\"center\">                  <!-- Card Container -->         <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;\">                      <!-- Header Banner -->           <tr>             <td style=\"background-color: #4f46e5; padding: 32px 40px; text-align: left;\">               <h1 style=\"color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;\">                 Meeting Scheduled               </h1>             </td>           </tr>            <!-- Body Content -->           <tr>             <td style=\"padding: 40px; text-align: left;\">               <p style=\"color: #374151; font-size: 16px; line-height: 1.6; margin-top: 0;\">                 Hello <strong>{{ $json.body?.name || 'There' }}</strong>,               </p>                              <p style=\"color: #4b5563; font-size: 15px; line-height: 1.6;\">                 Your request has been processed successfully. Below are the details for your upcoming session:               </p>                <!-- Details Box -->               <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6; margin: 24px 0;\">                 <tr>                   <td style=\"padding: 20px;\">                     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px; width: 100px;\"><strong>Topic:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.title || 'General Meeting' }}</td>                       </tr>                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px;\"><strong>Start Time:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.start || $now.toFormat('ff') }}</td>                       </tr>                       <tr>                         <td style=\"padding: 6px 0; color: #6b7280; font-size: 14px;\"><strong>End Time:</strong></td>                         <td style=\"padding: 6px 0; color: #111827; font-size: 14px;\">{{ $json.body?.end || $now.plus({ hours: 1 }).toFormat('ff') }}</td>                       </tr>                     </table>                   </td>                 </tr>               </table>                <!-- Call to Action Button -->               <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-top: 32px;\">                 <tr>                   <td align=\"center\">                     <a href=\"https://calendar.google.com\" target=\"_blank\" style=\"background-color: #4f46e5; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 600; font-size: 15px; display: inline-block;\">                       View Calendar                     </a>                   </td>                 </tr>               </table>              </td>           </tr>            <!-- Footer -->           <tr>             <td style=\"background-color: #f9fafb; padding: 24px 40px; text-align: center; border-top: 1px solid #f3f4f6;\">               <p style=\"color: #9ca3af; font-size: 13px; margin: 0; line-height: 1.5;\">                 This is an automated notification. If you have questions, reply to this email directly.               </p>             </td>           </tr>          </table>        </td>     </tr>   </table>  </body> </html>"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "136308b2-9e3a-4cfd-8ae5-a41d52380f32",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YrJsKNDtH90rPpTZ",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "309f9898-83f7-45cf-9a8b-8e6a25480508",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "60cc8007be45046e43f1c581e26d315f4f6c01a209b4535c2581e0f902db5668"
+  },
+  "nodeGroups": [],
+  "id": "WwdB5c7OJKx86J2n",
+  "tags": []
+}

@@ -1,0 +1,201 @@
+{
+  "name": "N8N flashcards question",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0c5183cb-da58-47da-8cc1-53f0d9235941",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LbW3ST836y-0lPkJanKvxqE6ZkrdTqz2jrXYUGF54oA",
+          "mode": "list",
+          "cachedResultName": "Flashcards-n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LbW3ST836y-0lPkJanKvxqE6ZkrdTqz2jrXYUGF54oA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2053431396,
+          "mode": "list",
+          "cachedResultName": "Flashcards",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LbW3ST836y-0lPkJanKvxqE6ZkrdTqz2jrXYUGF54oA/edit#gid=2053431396"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "311487c1-c63d-4168-81c9-725ddc942278",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pYsU4OaieiWxdjhG",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nreturn items.length ? [items[Math.floor(Math.random() * items.length)]] : [];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "7c4a614a-2efa-43c3-a4e7-39f7fad6b2d3",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "chatId": "7714106732",
+        "text": "={{ $('Get row(s) in sheet').item.json.question }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "3c979437-814d-4098-9d11-000b90ee0c49",
+      "name": "Send a text message",
+      "webhookId": "d7369fa9-9c5e-41b7-b656-091e0fd6514e",
+      "credentials": {
+        "telegramApi": {
+          "id": "EBO3DSIo4SzsyTY1",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "46e3b54c-316d-435e-b073-42c6239aec0f",
+      "name": "Wait",
+      "webhookId": "ae19226d-9b3b-418f-af0a-b43fe89775ea"
+    },
+    {
+      "parameters": {
+        "chatId": "7714106732",
+        "text": "={{ $('Get row(s) in sheet').item.json.answer }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "05c17022-402d-496b-86c6-9b01256f98db",
+      "name": "Send a text message1",
+      "webhookId": "fbe44806-ef8f-484b-808d-1b4c4c5562ce",
+      "credentials": {
+        "telegramApi": {
+          "id": "EBO3DSIo4SzsyTY1",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "86f665e2-a2e6-45fe-84f7-3512c72c8fd3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "60cc8007be45046e43f1c581e26d315f4f6c01a209b4535c2581e0f902db5668"
+  },
+  "nodeGroups": [],
+  "id": "TJnp29EJsLAQD3zP",
+  "tags": []
+}
